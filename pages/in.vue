@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import { db } from '~/plugins/firebase.js'
+
 export default {
   data() {
     return {
@@ -169,22 +171,22 @@ export default {
     }
   },
   created() {
-    this.restaurants = ["かんく", "武蔵", "aaa", "サンプル6", "サンプル7", "俺"];
-    this.initialize()
-
-    // for (let i = 0; i < 3; i++) {
-    //   let startRestaurantIdx = Math.floor(Math.random() * restaurants.length);
-    //   slots[i] = {
-    //     slotPos: i,
-    //     currentRestaurantIdx: startRestaurantIdx,
-    //     txt: restaurants[startRestaurantIdx]
-    //   };
-    // }
-    // this.restaurants = restaurants;
-    // this.slots = slots;
-    // this.timers = []; // スロット
+    let restaurants = []
+    db.collection("restaurants").get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach(doc => {
+          let data = doc.data()
+          if (!data.isOut && data.name) {
+            restaurants.push(data.name)
+          }
+        })
+      })
+      .then(() => {
+        this.restaurants = restaurants
+        this.initialize()
+      })
   }
-};
+}
 </script>
 
 <style>
