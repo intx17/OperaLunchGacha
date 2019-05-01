@@ -57,6 +57,7 @@
 
 <script>
 import { db } from '~/plugins/firebase.js'
+import moment from 'moment'
 
 export default {
   data() {
@@ -162,12 +163,31 @@ export default {
     },
     restaurantIsDecided () {
       this.decided = true
+      this.saveLog(this.resultRestaurantName)
       this.closeModal()
     },
     replay () {
       this.restaurants = this.restaurants.filter(r => r !== this.resultRestaurantName)
       this.initialize()
       this.closeModal()
+    },
+    saveLog (restaurantName) {
+      if (!restaurantName) {
+        return;
+      }
+      console.log("start save")
+      console.log(moment().format('YYYY/MM/DD'))
+      db.collection("logs")
+        .add({
+          name: restaurantName,
+          date: moment().format('YYYY/MM/DD')
+        })
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
     }
   },
   created() {
@@ -192,7 +212,7 @@ export default {
 <style>
 .container {
   margin: 0 auto;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   /* align-items: center; */
@@ -255,5 +275,9 @@ div.modal-card {
 
 p.modal-card-title {
   font-size: 1.2rem;
+}
+
+div.tabs:not(:last-child) {
+  margin-bottom: 0;
 }
 </style>

@@ -4,18 +4,14 @@
       <div class="columns">
         <div class="column">
           <p>
-            <span class="is-size-3 has-text-weight-bold has-text-dark">
-              昼飯スロット
-            </span>
+            <span class="is-size-3 has-text-weight-bold has-text-dark">昼飯スロット</span>
           </p>
         </div>
       </div>
       <div class="columns is-centered">
         <div v-for="st in this.slots" :key="st.slotPos" class="column is-one-third">
           <p class="tag is-rounded">
-            <span class="is-size-5">
-              {{st.txt}}
-            </span>
+            <span class="is-size-5">{{st.txt}}</span>
           </p>
         </div>
       </div>
@@ -32,17 +28,13 @@
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">
-              <span class="is-size-6">
-                結果
-              </span>
+              <span class="is-size-6">結果</span>
             </p>
             <button class="delete" aria-label="close" @click="closeModal"></button>
           </header>
           <section class="modal-card-body">
             <p>
-              <span class="is-size-5 has-text-weight-semibold">
-                {{resultRestaurantName}}
-              </span>
+              <span class="is-size-5 has-text-weight-semibold">{{resultRestaurantName}}</span>
             </p>
           </section>
           <footer class="modal-card-foot">
@@ -56,7 +48,7 @@
 </template>
 
 <script>
-import { db } from '~/plugins/firebase.js'
+import { db } from "~/plugins/firebase.js";
 
 export default {
   data() {
@@ -70,11 +62,13 @@ export default {
     };
   },
   methods: {
-    initialize () {
+    initialize() {
       let slots = [];
 
       for (let i = 0; i < 3; i++) {
-        let startRestaurantIdx = Math.floor(Math.random() * this.restaurants.length);
+        let startRestaurantIdx = Math.floor(
+          Math.random() * this.restaurants.length
+        );
         slots[i] = {
           slotPos: i,
           currentRestaurantIdx: startRestaurantIdx,
@@ -84,9 +78,9 @@ export default {
       this.slots = slots;
       this.timers = []; // スロット
     },
-    runSlot () {
+    runSlot() {
       if (this.running || this.restaurants.length <= 1 || this.decided) {
-        return
+        return;
       }
 
       this.running = true;
@@ -157,34 +151,56 @@ export default {
         }, 100);
       });
     },
-    closeModal () {
-      this.resultRestaurantName = ''
+    closeModal() {
+      this.resultRestaurantName = "";
     },
-    restaurantIsDecided () {
-      this.decided = true
-      this.closeModal()
+    restaurantIsDecided() {
+      this.decided = true;
+      this.saveLog(this.resultRestaurantName)
+      this.closeModal();
     },
-    replay () {
-      this.restaurants = this.restaurants.filter(r => r !== this.resultRestaurantName)
-      this.initialize()
-      this.closeModal()
+    replay() {
+      this.restaurants = this.restaurants.filter(
+        r => r !== this.resultRestaurantName
+      );
+      this.initialize();
+      this.closeModal();
+    },
+    saveLog(restaurantName) {
+      if (!restaurantName) {
+        return;
+      }
+      console.log("start save");
+      console.log(moment().format("YYYY/MM/DD"));
+      db.collection("logs")
+        .add({
+          name: restaurantName,
+          date: moment().format("YYYY/MM/DD")
+        })
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
     }
   },
   created() {
-    let restaurants = []
-    db.collection("restaurants").get()
-      .then((querySnapshot) => {
+    let restaurants = [];
+    db.collection("restaurants")
+      .get()
+      .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          let data = doc.data()
+          let data = doc.data();
           if (data.name) {
-            restaurants.push(data.name)
+            restaurants.push(data.name);
           }
-        })
+        });
       })
       .then(() => {
-        this.restaurants = restaurants
-        this.initialize()
-      })
+        this.restaurants = restaurants;
+        this.initialize();
+      });
   }
 };
 </script>
@@ -192,7 +208,7 @@ export default {
 <style>
 .container {
   margin: 0 auto;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   /* align-items: center; */
@@ -255,5 +271,9 @@ div.modal-card {
 
 p.modal-card-title {
   font-size: 1.2rem;
+}
+
+div.tabs:not(:last-child) {
+  margin-bottom: 0;
 }
 </style>

@@ -7,6 +7,9 @@
       <li class="tab">
         <a href="/out" @click="toggleActiveTab">オペラ外</a>
       </li>
+      <li class="tab">
+        <a href="/register" @click="toggleActiveTab">店登録</a>
+      </li>
     </ul>
   </div>
 </template>
