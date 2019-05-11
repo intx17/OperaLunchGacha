@@ -58,7 +58,7 @@ export default {
                 })
         })
         .then(() => {
-            let thisMonthLogRankMap = new Map()
+            let tmpMap = new Map()
             this.logs = logs
             this.logs.filter(l => {
                 // 今月のログを取得する
@@ -67,10 +67,12 @@ export default {
                     && (dateMoment.month() === this.monthNum)
             }).forEach(l => {
                 // 選ばれた回数を取得
-                let currentCount = thisMonthLogRankMap.get(l.name) || 0
-                thisMonthLogRankMap.set(l.name, currentCount + 1)
+                let currentCount = tmpMap.get(l.name) || 0
+                tmpMap.set(l.name, currentCount + 1)
             })
-            this.thisMonthLogRankMap = thisMonthLogRankMap
+
+            this.thisMonthLogRankMap = new Map([...tmpMap.entries()]
+                .sort((a, b) => a[1] === b[1] ? 0 : a[1] < b[1] ? 1 : -1));
             console.log(thisMonthLogRankMap)
         })
     }
