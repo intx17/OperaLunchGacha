@@ -73,7 +73,7 @@ export default {
     }
   },
   router: {
-    base: routerBase,
+    base: '/OperaLunchGacha/',
     extendRoutes (routes, resolve) {
       routes.push({
         name: 'index',
