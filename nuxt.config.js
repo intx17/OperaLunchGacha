@@ -1,6 +1,6 @@
 import pkg from './package'
 
-const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? '/<repository-name>/' : '/'
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? '/OperaLunchGacha/' : '/'
 
 export default {
   mode: 'spa',
