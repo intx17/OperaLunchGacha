@@ -1,12 +1,20 @@
 <template>
     <div class="container">
         <section class="section">
-            <div class="column">
-                <li v-for="[key, val] in Array.from(this.thisMonthLogRankMap)" :key="key">
-                    {{key}}
-                    {{val}}
-                </li>
-            </div>
+            <table class="table is-striped">
+                <thead>
+                    <tr>
+                        <th>店名</th>
+                        <th>今月行った回数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="[key, val] in Array.from(this.thisMonthLogRankMap)" :key="key">
+                        <td>{{key}}</td>
+                        <td>{{val}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </div> 
 </template>
@@ -53,10 +61,12 @@ export default {
             let thisMonthLogRankMap = new Map()
             this.logs = logs
             this.logs.filter(l => {
+                // 今月のログを取得する
                 let dateMoment = moment(l.date, 'YYYY/MM/DD')
                 return (dateMoment.year() === this.yearNum)
                     && (dateMoment.month() === this.monthNum)
             }).forEach(l => {
+                // 選ばれた回数を取得
                 let currentCount = thisMonthLogRankMap.get(l.name) || 0
                 thisMonthLogRankMap.set(l.name, currentCount + 1)
             })
@@ -67,3 +77,14 @@ export default {
 }
     
 </script>
+
+<style>
+.container {
+  margin: 0 auto;
+  /* min-height: 100vh; */
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  text-align: center;
+}
+</style>

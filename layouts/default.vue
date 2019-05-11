@@ -1,6 +1,6 @@
 <template>
   <div>
-    <bread-crumb />
+    <nav-bar />
     <nuxt />
   </div>
 </template>
@@ -56,10 +56,10 @@ html {
 </style>
 
 <script>
-import BreadCrumb from '~/components/BreadCrumb'
+import NavBar from '~/components/NavBar'
 export default {
   components: {
-    BreadCrumb
+    NavBar
   }
 }
 </script>

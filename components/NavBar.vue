@@ -10,13 +10,18 @@
       <li class="tab">
         <a href="/register" @click="toggleActiveTab">店登録</a>
       </li>
+      <li class="tab">
+        <a href="/ranking" @click="toggleActiveTab">ランキング</a>
+      </li>
     </ul>
   </div>
+</nav>
+
 </template>
 
 <script>
 export default {
-  name: "BreadCrumb",
+  name: "NavBar",
   data () {
     return {
       currentActiveLinkElm: null
@@ -42,3 +47,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.tab a {
+  font-size: 0.8rem;
+}
+</style>

@@ -69,5 +69,24 @@ export default {
     */
     extend(config, ctx) {
     }
+  },
+  router: {
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'index',
+        path: '/',
+        component: resolve(__dirname, 'pages/slot.vue')
+      },
+      {
+        name: 'in',
+        path: '/in',
+        component: resolve(__dirname, 'pages/slot.vue')
+      },
+      {
+        name: 'out',
+        path: '/out',
+        component: resolve(__dirname, 'pages/slot.vue')
+      })
+    }
   }
 }
