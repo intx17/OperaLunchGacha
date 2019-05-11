@@ -2,21 +2,19 @@
   <div class="tabs is-centered">
     <ul>
       <li class="tab">
-        <a href="/in" @click="toggleActiveTab">オペラ内</a>
+        <router-link to="/in" @click="toggleActiveTab">オペラ内</router-link>
       </li>
       <li class="tab">
-        <a href="/out" @click="toggleActiveTab">オペラ外</a>
+        <router-link to="/out" @click="toggleActiveTab">オペラ外</router-link>
       </li>
       <li class="tab">
-        <a href="/register" @click="toggleActiveTab">店登録</a>
+        <router-link to="/register" @click="toggleActiveTab">店登録</router-link>
       </li>
       <li class="tab">
-        <a href="/ranking" @click="toggleActiveTab">ランキング</a>
+        <router-link to="/ranking" @click="toggleActiveTab">ランキング</router-link>
       </li>
     </ul>
   </div>
-</nav>
-
 </template>
 
 <script>
@@ -48,8 +46,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .tab a {
   font-size: 0.8rem;
+}
+
+div.tabs:not(:last-child) {
+  margin-bottom: 0;
 }
 </style>
